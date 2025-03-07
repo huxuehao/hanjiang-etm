@@ -1,120 +1,232 @@
-<script lang="ts" setup>
-import { ref, onBeforeUnmount } from "vue";
+<script setup>
+import { ref, computed, onBeforeUnmount } from "vue";
 
-const splitLayout = ref();
 const props = defineProps({
-  // 初始宽度
-  initialWidth: {
-    type: Number,
-    default: 250,
+  // 支持水平和垂直切割
+  direction: {
+    type: String,
+    default: "horizontal",
+    validator: (v) => ["horizontal", "vertical"].includes(v),
   },
-  // 最小宽度
-  minWidth: {
+  // 初始宽度/高度（单位px）
+  initialSize: {
     type: Number,
-    default: 250,
+    required: true,
   },
-  // 最大宽度
-  maxWidth: {
+  // 最小宽度/高度（单位px）
+  minSize: {
     type: Number,
-    default: 350,
+    default: 0,
+  },
+  // 最大宽度/高度（单位px）
+  maxSize: {
+    type: Number,
+    default: null,
   },
 });
 
-const leftWidth = ref(props.initialWidth); // 当前左侧菜单宽度
-let isDragging = ref(false);
-let lastX = ref(0);
+const size = ref(props.initialSize);
+const isDragging = ref(false);
+const startPosition = ref(0);
+const startSize = ref(0);
 
-// 开始拖拽
-const onMouseDown = (event: any) => {
+const canDrag = computed(() => {
+  return (
+    props.maxSize === null ||
+    props.maxSize !== props.initialSize ||
+    props.minSize !== props.initialSize
+  );
+});
+
+const firstPaneStyle = computed(() => {
+  const style = {};
+  const dimension = props.direction === "horizontal" ? "width" : "height";
+  const capitalized = dimension.replace(/^\w/, (c) => c.toUpperCase());
+
+  style[dimension] = `${size.value}px`;
+  style[`min${capitalized}`] = `${props.minSize}px`;
+
+  if (props.maxSize !== null) {
+    style[`max${capitalized}`] = `${props.maxSize}px`;
+  }
+  return style;
+});
+
+const secondPaneStyle = computed(() => ({
+  flex: 1,
+  overflow: "hidden",
+}));
+
+let cleanup = null;
+
+function setCursor(e) {
+  if (!canDrag.value) return;
+  e.target.style.cursor =
+    props.direction === "horizontal" ? "col-resize" : "row-resize";
+}
+
+function resetCursor(e) {
+  e.target.style.cursor = "default";
+}
+
+function startDrag(e) {
+  if (!canDrag.value) return;
+
   isDragging.value = true;
-  lastX.value = event.clientX;
+  startPosition.value = props.direction === "horizontal" ? e.clientX : e.clientY;
+  startSize.value = size.value;
 
-  // 禁用文本选择
+  const moveHandler = (e) => {
+    if (!isDragging.value) return;
+    const current = props.direction === "horizontal" ? e.clientX : e.clientY;
+    const delta = current - startPosition.value;
+    let newSize = startSize.value + delta;
+
+    // 应用双边界限制
+    newSize = Math.max(newSize, props.minSize);
+    if (props.maxSize !== null) {
+      newSize = Math.min(newSize, props.maxSize);
+    }
+
+    size.value = newSize;
+  };
+
+  const upHandler = () => {
+    isDragging.value = false;
+    document.removeEventListener("mousemove", moveHandler);
+    document.removeEventListener("mouseup", upHandler);
+    document.body.style.removeProperty("user-select");
+    cleanup = null;
+  };
+
+  document.addEventListener("mousemove", moveHandler);
+  document.addEventListener("mouseup", upHandler);
   document.body.style.userSelect = "none";
-  document.addEventListener("mousemove", onMouseMove);
-  document.addEventListener("mouseup", onMouseUp);
-};
+  cleanup = upHandler;
+}
 
-// 拖拽过程中
-const onMouseMove = (event: any) => {
-  if (!isDragging.value) return;
-  splitLayout.value.style.cursor = "ew-resize";
-
-  const X = event.clientX - lastX.value;
-  lastX.value = event.clientX;
-
-  // 计算新的宽度并限制最小/最大值
-  let newWidth = leftWidth.value + X;
-  newWidth = Math.max(props.minWidth, newWidth); // 最小宽度限制
-  newWidth = Math.min(props.maxWidth, newWidth); // 最大宽度限制
-
-  leftWidth.value = newWidth;
-};
-
-// 停止拖拽
-const onMouseUp = () => {
-  isDragging.value = false;
-  document.body.style.userSelect = ""; // 恢复文本选择
-  splitLayout.value.style.cursor = "default";
-  document.removeEventListener("mousemove", onMouseMove);
-  document.removeEventListener("mouseup", onMouseUp);
-};
-
-// 清理事件
 onBeforeUnmount(() => {
-  document.removeEventListener("mousemove", onMouseMove);
-  document.removeEventListener("mouseup", onMouseUp);
+  if (cleanup) {
+    cleanup();
+  }
 });
 </script>
 
 <template>
-  <div class="split-layout" ref="splitLayout">
-    <div class="left-panel" :style="{ width: `${leftWidth}px` }">
-      <slot name="left"></slot>
+  <div class="resize-container" :class="direction">
+    <div class="first-pane" :style="firstPaneStyle">
+      <slot name="first"></slot>
     </div>
-    <div class="resize-bar">
-      <div class="tool-Bar" @mousedown="onMouseDown"></div>
-    </div>
-    <div class="right-panel">
-      <slot name="right"></slot>
+    <div
+      class="resize-trigger"
+      @mousedown.prevent="startDrag"
+      @mouseenter="setCursor"
+      @mouseleave="resetCursor"
+    ></div>
+    <div class="second-pane" :style="secondPaneStyle">
+      <slot name="second"></slot>
     </div>
   </div>
 </template>
 
-<style lang="scss" scoped>
-.split-layout {
+<style scoped lang="scss">
+.resize-container {
   display: flex;
+  position: relative;
+  width: 100%;
   height: 100%;
-}
-
-.left-panel {
-  transition: width 5ms ease;
   overflow: hidden;
 }
 
-.right-panel {
-  flex-grow: 1;
+.horizontal {
+  flex-direction: row;
+}
+
+.vertical {
+  flex-direction: column;
+}
+
+.resize-trigger {
+  position: relative;
+  flex-shrink: 0;
+  z-index: 10;
+  background: transparent;
+  transition: background-color 0.2s;
+}
+
+/* 水平布局样式 */
+.horizontal .resize-trigger {
+  width: 7px;  /* 总热区宽度 */
+  margin: 0 -3px; /* 扩展热区 */
+  cursor: col-resize;
+}
+
+/* 垂直布局样式 */
+.vertical .resize-trigger {
+  height: 7px;  /* 总热区高度 */
+  margin: -3px 0; /* 扩展热区 */
+  cursor: row-resize;
+}
+
+/* 拖拽条视觉元素（实际可见部分） */
+.resize-trigger::after {
+  content: '';
+  position: absolute;
+  background: #f0f0f0;
+  transition: all 0.2s;
+}
+
+.horizontal .resize-trigger::after {
+  width: 4px;
+  height: 60px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  border-radius: 2px;
+}
+
+.vertical .resize-trigger::after {
+  height: 4px;
+  width: 60px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  border-radius: 2px;
+}
+
+/* 悬停效果 */
+.resize-trigger:hover::after {
+  background: #d7d7d7;
+}
+
+.first-pane {
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.second-pane {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
   overflow: hidden;
 }
 
-.resize-bar {
-  width: 12px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* 创建视觉间隔 */
+.horizontal .first-pane {
+  margin-right: 3px;  /* 间隔尺寸 */
+}
+.horizontal .second-pane {
+  margin-left: 3px;  /* 间隔尺寸 */
+}
 
-  &:hover>.tool-Bar {
-    border-left: 1px solid #a5a5a5;
-    border-right: 1px solid #a5a5a5;
-  }
-
-  .tool-Bar {
-    width: 2px;
-    height: 40px;
-    cursor: ew-resize;
-    display: inline-block;
-    border-left: 1px solid #d4d4d4;
-    border-right: 1px solid #d4d4d4;
-  }
+.vertical .first-pane {
+  margin-bottom: 3px;  /* 间隔尺寸 */
+}
+.vertical .second-pane {
+  margin-top: 3px;  /* 间隔尺寸 */
 }
 </style>
