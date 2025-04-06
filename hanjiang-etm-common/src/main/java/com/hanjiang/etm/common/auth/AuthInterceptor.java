@@ -51,6 +51,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             /* 验证Token，token错误或过期则会报错 */
             Claims claims = TokenUtil.parseToken(token);
         } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             throw new NotAuthException();
         }
 

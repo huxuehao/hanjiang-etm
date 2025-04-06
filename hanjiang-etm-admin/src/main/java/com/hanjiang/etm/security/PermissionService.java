@@ -13,6 +13,7 @@ import com.hanjiang.etm.common.util.AuthUtil;
 import com.hanjiang.etm.common.util.CacheUtil;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -24,6 +25,10 @@ import java.util.stream.Collectors;
  **/
 @Component("ps")
 public class PermissionService {
+    private static final List<String> WHITE_LIST = new ArrayList<String>(){{
+        add("post::user:login");
+        add("get::user:refresh-token");
+    }};
     private final CacheUtil cacheUtil;
     private final TRoleService roleService;
     private final TMenuApiService menuApiService;
@@ -42,7 +47,7 @@ public class PermissionService {
      */
     public boolean hasPermission(String permissionCode) {
         // 放行登录接口
-        if ("post::user:login".equals(permissionCode)) {
+        if (WHITE_LIST.contains(permissionCode)) {
             return true;
         }
 
