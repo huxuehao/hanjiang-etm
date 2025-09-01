@@ -49,7 +49,7 @@ onMounted(() => {
 })
 
 const getConfig = () => {
-  return protocolConfig.value 
+  return protocolConfig.value
 };
 
 let form = ref()
@@ -59,7 +59,7 @@ defineExpose({form, getConfig})
 </script>
 
 <template>
-  <el-form ref="form" :model="protocolConfig" :rules="rules" label-width="80px">
+  <el-form ref="form" :model="protocolConfig" :rules="rules" label-width="90px">
     <el-row :gutter="0">
       <el-col :span="24">
         <el-form-item label="Host" prop="host">

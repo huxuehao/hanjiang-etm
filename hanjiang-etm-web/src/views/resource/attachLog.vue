@@ -144,7 +144,7 @@ const changePageSize = (pageSize: number) => {
     <!-- 列表区域 -->
     <div
       class="data-list"
-      :style="[{ height: 'calc(100vh - 160px - ' + tHeight + 'px)' }]"
+      :style="[{ height: 'calc(100vh - 120px - ' + tHeight + 'px)' }]"
     >
       <el-table
         :stripe="false"
@@ -207,8 +207,4 @@ const changePageSize = (pageSize: number) => {
 
 <style lang="scss" scoped>
 @use "/src/style/views/index.scss" as *;
-
-.search-box, .button-box, .data-list {
-  margin-left: 10px;
-}
 </style>

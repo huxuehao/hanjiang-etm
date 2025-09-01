@@ -189,7 +189,7 @@ const handleDelete = (rows: any) => {
     <!-- 列表区域 -->
     <div
       class="data-list"
-      :style="[{ height: 'calc(100vh - 180px - ' + tHeight + 'px)' }]"
+      :style="[{ height: 'calc(100% - var(--table-hg-150) - ' + tHeight + 'px)' }]"
     >
       <el-table
         :stripe="false"
@@ -252,7 +252,7 @@ const handleDelete = (rows: any) => {
           width="200px"
         >
         </el-table-column>
-        <el-table-column label="操作" width="140" align="center" fixed="right">
+        <el-table-column label="操作" width="160" align="center" fixed="right">
           <template #default="scope">
             <el-button
               v-permission="'attach_download'"
@@ -296,10 +296,4 @@ const handleDelete = (rows: any) => {
 
 <style lang="scss" scoped>
 @use "/src/style/views/index.scss" as *;
-
-.search-box,
-.button-box,
-.data-list {
-  margin-left: 10px;
-}
 </style>

@@ -454,7 +454,7 @@ const changePageSize = (pageSize: number) => {
         <!-- 列表区域 -->
         <div
           class="data-list"
-          :style="[{ height: 'calc(100vh - 180px - ' + tHeight + 'px)' }]"
+          :style="[{ height: 'calc(100% - var(--table-hg-150) - ' + tHeight + 'px)' }]"
         >
           <el-table
             :stripe="false"
@@ -520,7 +520,7 @@ const changePageSize = (pageSize: number) => {
             </el-table-column>
             <el-table-column
               label="操作"
-              width="200"
+              width="220"
               align="center"
               fixed="right"
             >
@@ -626,8 +626,8 @@ const changePageSize = (pageSize: number) => {
         </el-col>
         <el-col :span="12">
           <el-form-item label="是否有效" prop="valid">
-            <!-- <el-switch 
-              v-model="formData.valid" 
+            <!-- <el-switch
+              v-model="formData.valid"
               style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
               active-text="有效"
               inactive-text="无效"

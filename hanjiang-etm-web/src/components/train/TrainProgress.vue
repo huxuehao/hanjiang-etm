@@ -7,6 +7,8 @@ import {
   trainUserQualified,
 } from "@/api/trainUser";
 import { trainProgressExport } from "@/api/trainTemplate";
+import setting from "@/config/setting.ts"
+
 const props = defineProps({
   trainName: {
     type: String,
@@ -105,7 +107,7 @@ const changePageSize = (pageSize: number) => {
 const handleView = (row: any) => {
   const params_ = btoa(JSON.stringify({ trainId: row.trainId, userId: row.userId }))
   const params = encodeURIComponent(params_)
-  window.open(`/train/view/${params}`, "_blank");
+  window.open(`${setting.baseUrl}/#/train/view/${params}`, "_blank");
 };
 
 // 导出

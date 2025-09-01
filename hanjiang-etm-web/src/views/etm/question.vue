@@ -590,7 +590,7 @@ const changePageSize = (pageSize: number) => {
         <!-- 按钮区域-->
         <el-row class="button-box">
           <el-col :span="16">
-            <el-popover placement="bottom" width="370">
+            <el-popover placement="bottom" width="420">
               <el-button link type="" icon="TurnOff" @click="handleAdd(1)"
                 >单选题</el-button
               >
@@ -623,7 +623,7 @@ const changePageSize = (pageSize: number) => {
             >
               删除
             </el-button>
-            <el-popover placement="bottom" width="170">
+            <el-popover placement="bottom" width="200">
               <div style="text-align: center">
                 <el-upload
                   style="display: inline-block"
@@ -672,7 +672,7 @@ const changePageSize = (pageSize: number) => {
         <!-- 列表区域 -->
         <div
           class="data-list"
-          :style="[{ height: 'calc(100vh - 180px - ' + tHeight + 'px)' }]"
+          :style="[{ height: 'calc(100% - var(--table-hg-150) - ' + tHeight + 'px)' }]"
         >
           <el-table
             :stripe="false"
@@ -783,7 +783,7 @@ const changePageSize = (pageSize: number) => {
             </el-table-column>
             <el-table-column
               label="操作"
-              width="200"
+              width="220"
               align="center"
               fixed="right"
             >

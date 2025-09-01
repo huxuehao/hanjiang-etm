@@ -1,6 +1,6 @@
 export default {
-  systemName: "ETM-ONLINE",
-  homePath: "/statistics",
+  systemName: "ETM ONLINE",
+  homePath: "/home",
   repeatReqInterval: 500, // 重复请求时间间隔
   tokenHeader: "Authorization",
   refreshTokenHeader: "RefreshAuthorization",
@@ -10,4 +10,5 @@ export default {
   whiteList: [
     "/login"
   ],
+  baseUrl: 'web/index.html'
 };

@@ -49,14 +49,14 @@ const findMenuPath = (targetPath: string) => {
 </script>
 
 <template>
-  <el-page-header>
+  <el-page-header class="my-bg">
     <template #breadcrumb>
       <el-breadcrumb separator="/">
         <!-- <el-breadcrumb-item :to="{ path: setting.homePath }" v-permission="'home'">
           <el-button link type="text" icon="HomeFilled" title="点击回到首页">首页</el-button>
         </el-breadcrumb-item> -->
         <el-breadcrumb-item v-for="menuItem in menuPathList">
-          <el-button link type="text" :icon="menuItem.icon" disabled>{{ menuItem.name }}</el-button>
+          {{ menuItem.name }}
         </el-breadcrumb-item>
       </el-breadcrumb>
     </template>
@@ -64,9 +64,14 @@ const findMenuPath = (targetPath: string) => {
 </template>
 
 <style lang="scss" scoped>
+.my-bg {
+  // background-color: #FFFFFF;
+  padding: 2px 5px;
+  border-radius: 5px;
+}
 ::v-deep .el-page-header {
   &__breadcrumb {
-    margin: 5px 0 0 15px;
+    margin: 5px 0;
     .el-breadcrumb {
       &__item {
         .is-link {
@@ -77,7 +82,7 @@ const findMenuPath = (targetPath: string) => {
           }
         }
         .el-breadcrumb__inner {
-          font-size: 12px;
+          font-size: 13px;
           color: #6d6f74;
         }
       }

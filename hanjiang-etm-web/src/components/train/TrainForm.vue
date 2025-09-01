@@ -1056,7 +1056,7 @@ onUnmounted(() => {
               <template #header>
                 <el-popover
                   placement="bottom"
-                  width="380"
+                  width="450"
                   v-if="!disableEdit"
                   v-model="addVisible"
                 >
@@ -1104,7 +1104,7 @@ onUnmounted(() => {
                       >添加试题</el-button
                     >
                   </template>
-                  
+
                 </el-popover>
                 <span v-else>操作</span>
               </template>

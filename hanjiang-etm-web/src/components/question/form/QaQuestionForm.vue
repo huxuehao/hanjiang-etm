@@ -143,7 +143,7 @@ defineExpose({ config, form, genEntity, getConfig });
 <template>
   <div style="margin: 0 20px">
     <el-form
-      label-width="75px"
+      label-width="85px"
       ref="form"
       :model="config"
       :rules="rules"

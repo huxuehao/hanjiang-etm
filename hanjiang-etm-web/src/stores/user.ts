@@ -11,10 +11,13 @@ import {
 } from "@/utils/auth";
 import { menuTreePermission } from "@/api/menu";
 import dynamicRouter from "@/router/dynamicRouter";
+import { useMenusStore } from "@/stores/menus";
 
 export const useUserStore = defineStore("user", () => {
   // 全局加载
   let globalLoading = ref(false);
+
+  const menusStore = useMenusStore()
 
   // 用户信息
   const userInfo = ref(cache.local.getJSON("userInfo", {}));
@@ -32,7 +35,33 @@ export const useUserStore = defineStore("user", () => {
     userInfo.value = [];
     cache.local.setJSON("userInfo", []);
   };
-  
+
+  // 是否刷新页面
+  let isRefresh = ref(true)
+  const setRefresh = (r: boolean) => {
+    isRefresh.value = r;
+  };
+  const getRefresh = () => {
+    return isRefresh.value;
+  };
+
+  // 是否全屏
+  let screenfull = ref(false)
+  const setScreenfull = (r: boolean) => {
+  screenfull.value = r;
+  };
+  const getScreenfull = () => {
+    return screenfull.value;
+  };
+
+  // 是否折叠
+  let fold = ref(false)
+  const setFold = (r: boolean) => {
+    fold.value = r;
+  };
+  const getFold = () => {
+    return fold.value;
+  };
 
   // 菜单列表
   let menuList = ref(cache.local.getJSON("menus", []));
@@ -109,6 +138,7 @@ export const useUserStore = defineStore("user", () => {
           removeUserInfo()
           removeMenuPath()
           removePermissions()
+          menusStore.removeCurrentFirstFloorMenu()
           resolve({});
         })
         .catch((error) => {
@@ -122,6 +152,16 @@ export const useUserStore = defineStore("user", () => {
 
   return { 
     userInfo, 
+
+    setRefresh,
+    getRefresh,
+
+    setScreenfull,
+    getScreenfull,
+
+    setFold,
+    getFold,
+
     globalLoading, 
     doLogin, 
     doLogout, 

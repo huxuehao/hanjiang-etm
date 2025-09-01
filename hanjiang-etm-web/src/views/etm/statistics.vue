@@ -7,20 +7,20 @@ import UserActive from '@/components/statistics/UserActive.vue';
 </script>
 
 <template>
-  <el-row style="background-color: #F5F6F9;height: calc((100% - 1px) / 2)">
+  <el-row style="background-color: #F5F6F9;height: calc((100% - 50px) / 2)">
     <el-col :span="16" class="chart-box" style="padding-left: 0;padding-top: 0;">
       <div class="chart-box-item">
         <UserActive />
       </div>
     </el-col>
-    <el-col :span="8" class="chart-box" style="padding-right: 0;padding-top: 0;">
+    <el-col :span="8" class="chart-box" style="padding-right: 10px;padding-top: 0;">
       <div class="chart-box-item">
         <!-- <AttachType /> -->
         <QuestionType />
       </div>
     </el-col>
   </el-row>
-  <el-row style="background-color: #F5F6F9;height: calc((100% - 1px) / 2)">
+  <el-row style="background-color: #F5F6F9;height: calc((100% - 50px) / 2)">
     <el-col :span="8" class="chart-box" style="padding-left: 0;">
       <div class="chart-box-item">
         <QuestionLevel />
@@ -31,7 +31,7 @@ import UserActive from '@/components/statistics/UserActive.vue';
         <QuestionType />
       </div>
     </el-col> -->
-    <el-col :span="16" class="chart-box" style="padding-right: 0;">
+    <el-col :span="16" class="chart-box" style="padding-right: 10px;">
       <div class="chart-box-item">
         <QuestionTrainInfo />
       </div>

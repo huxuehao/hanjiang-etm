@@ -2,6 +2,7 @@
 import { taskPage } from "@/api/task";
 import { ElMessageBox } from "element-plus";
 import { onMounted, onUnmounted, reactive, ref, watch } from "vue";
+import setting from "@/config/setting.ts"
 
 const props = defineProps({
   showType: {
@@ -102,18 +103,18 @@ const handleReset = () => {
 const handleApproval = (row: any) => {
   const params_ = btoa(JSON.stringify({ exmaId: row.examTranId, userId: row.userCode }))
   const params = encodeURIComponent(params_)
-  window.open(`/exam/correct/${params}`, "_blank");
+  window.open(`${setting.baseUrl}/#/exam/correct/${params}`, "_blank");
 };
 // 查看
 const handleView = (row: any) => {
   if (["train"].includes(props.showType)) {
     const params_ = btoa(JSON.stringify({ trainId: row.examTranId, userId: row.userCode }))
     const params = encodeURIComponent(params_)
-    window.open(`/train/view/${params}`, "_blank");
+    window.open(`${setting.baseUrl}/#/train/view/${params}`, "_blank");
   } else if (["exam"].includes(props.showType)) {
     const params_ = btoa(JSON.stringify({ exmaId: row.examTranId, userId: row.userCode }))
     const params = encodeURIComponent(params_)
-    window.open(`/exam/question/${params}`, "_blank");
+    window.open(`${setting.baseUrl}/#/exam/question/${params}`, "_blank");
   }
 };
 // 操作
@@ -139,11 +140,11 @@ const handleEdit = (row: any) => {
       if (["train"].includes(props.showType)) {
         const params_ = btoa(JSON.stringify({ trainId: row.examTranId, userId: row.userCode }))
         const params = encodeURIComponent(params_)
-        window.open(`/train/view/${params}`, "_blank");
+        window.open(`${setting.baseUrl}/#/train/view/${params}`, "_blank");
       } else if (["exam"].includes(props.showType)) {
         const params_ = btoa(JSON.stringify({ exmaId: row.examTranId, userId: row.userCode }))
         const params = encodeURIComponent(params_)
-        window.open(`/exam/question/${params}`, "_blank");
+        window.open(`${setting.baseUrl}/#/exam/question/${params}`, "_blank");
       }
     });
   }
@@ -232,7 +233,7 @@ const monitorSearchResize = () => {
   <!--列表区域-->
   <div
     class="data-list"
-    :style="[{ height: 'calc(100vh - 206px - ' + tHeight + 'px)' }]"
+    :style="[{ height: 'calc(100vh - 170px - ' + tHeight + 'px)' }]"
   >
     <el-table
       :data="dataList"
@@ -397,7 +398,4 @@ const monitorSearchResize = () => {
 
 <style lang="scss" scoped>
 @use "/src/style/views/index.scss" as *;
-.search-box, .button-box, .data-list, .page-box {
-  padding-right: 0;
-}
 </style>

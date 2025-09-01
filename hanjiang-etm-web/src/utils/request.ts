@@ -81,7 +81,7 @@ instance.interceptors.response.use(
     } else if (code == 202) {
       ElMessage({  message: msg, type: "info", plain: true, });
       return response;
-    } else if(code === 404) {
+    } else if(code === 401) {
       router.push("/login");
       return Promise.reject(msg);
     } else {
@@ -106,12 +106,12 @@ instance.interceptors.response.use(
         } catch (err) {
           removeToken();
           removeRefreshToken();
-          window.location.href = "/login";
+          window.location.href = `/${setting.baseUrl}/#/login`;
           return Promise.reject(err);
         }
       } else {
         removeToken()
-        window.location.href = "/login";
+        window.location.href = `/${setting.baseUrl}/#/login`;
         return Promise.reject(error);
       }
     }

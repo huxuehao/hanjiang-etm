@@ -1,17 +1,17 @@
 <template>
   <div class="body">
-      <div class="mars"></div>
-      <img src="../assets/images/404/404.svg" class="logo-404">
-      <img src="../assets/images/404/meteor.svg" class="meteor">
-      <p class="title">Oh no!!</p>
-      <p class="subtitle">
-        哎呀！<br>您访问的页面不存在。
-      </p>
-      <div align="center">
-          <a class="btn-back" href="/">返回首页</a>
-      </div>
-      <img src="../assets/images/404/astronaut.svg" class="astronaut">
-      <img src="../assets/images/404/spaceship.svg" class="spaceship">
+    <div class="mars"></div>
+    <img src="../assets/images/404/404.svg" class="logo-404">
+    <img src="../assets/images/404/meteor.svg" class="meteor">
+    <p class="title">Oh no!!</p>
+    <p class="subtitle">
+      哎呀！<br>您访问的页面不存在。
+    </p>
+    <div align="center">
+      <a class="btn-back" href="/">返回首页</a>
+    </div>
+    <img src="../assets/images/404/astronaut.svg" class="astronaut">
+    <img src="../assets/images/404/spaceship.svg" class="spaceship">
   </div>
 </template>
 
@@ -21,15 +21,15 @@
 <style lang="scss" scoped>
 @keyframes floating {
   from {
-      transform: translateY(0px);
+    transform: translateY(0px);
   }
 
   65% {
-      transform: translateY(15px);
+    transform: translateY(15px);
   }
 
   to {
-      transform: translateY(0px);
+    transform: translateY(0px);
   }
 }
 
@@ -63,7 +63,7 @@
 
 @media (max-width: 480px) and (min-width: 320px) {
   .logo-404 {
-      top: 45vmin;
+    top: 45vmin;
   }
 }
 
@@ -84,7 +84,7 @@
 
 @media (max-width: 480px) and (min-width: 320px) {
   .title {
-      margin-top: 65vmin;
+    margin-top: 65vmin;
   }
 }
 
@@ -115,7 +115,7 @@
 
 @media (max-width: 480px) and (min-width: 320px) {
   .btn-back {
-      font-size: 3.5vmin;
+    font-size: 3.5vmin;
   }
 }
 
@@ -129,7 +129,7 @@
 
 @media (max-width: 480px) and (min-width: 320px) {
   .astronaut {
-      top: 2vmin;
+    top: 2vmin;
   }
 }
 
@@ -141,7 +141,7 @@
 
 @media (max-width: 480px) and (min-width: 320px) {
   .spaceship {
-      width: 45vmin;
-      bottom: 18vmin;
+    width: 45vmin;
+    bottom: 18vmin;
   }
 }</style>

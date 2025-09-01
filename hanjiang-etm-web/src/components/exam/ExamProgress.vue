@@ -7,6 +7,8 @@ import {
   examUserQualified,
 } from "@/api/examUser";
 import { examProgressExport } from "@/api/examTemplate";
+import setting from "@/config/setting.ts"
+
 const props = defineProps({
   examName: {
     type: String,
@@ -105,7 +107,7 @@ const changePageSize = (pageSize: number) => {
 const handleView = (row: any) => {
   const params_ = btoa(JSON.stringify({ exmaId: row.examId, userId: row.userId }))
   const params = encodeURIComponent(params_)
-  window.open(`/exam/question/${params}`, "_blank");
+  window.open(`${setting.baseUrl}/#/exam/question/${params}`, "_blank");
 };
 
 // 导出

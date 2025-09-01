@@ -13,8 +13,8 @@ const genRouter = (config: any) => {
   // 规范路径
   let componentPath = path.startsWith("/") ? path.slice(1) : path;
   componentPath = componentPath.endsWith(".vue")
-    ? componentPath.slice(0, componentPath.length - 3)
-    : componentPath;
+      ? componentPath.slice(0, componentPath.length - 3)
+      : componentPath;
 
   // 路由校验
   if(!views[`/src/views/${componentPath}.vue`]) {
@@ -22,9 +22,9 @@ const genRouter = (config: any) => {
   }
   // 动态加载组件
   const component = defineAsyncComponent(() =>
-    views[`/src/views/${componentPath}.vue`]()
-      .then((module: any) => module.default)
-      .catch(() => import('@/views/404.vue')) // 404
+      views[`/src/views/${componentPath}.vue`]()
+          .then((module: any) => module.default)
+          .catch(() => import('@/views/404.vue')) // 404
   );
 
   // 动态加载组件

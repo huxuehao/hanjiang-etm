@@ -46,54 +46,54 @@ const loadCounts = async () => {
 };
 </script>
 <template>
-  <div style="padding: 10px;">
-    <el-steps :space="200" :active="activeStep" simple>
-      <el-step title="考试" icon="Edit" class="task-step" @click="changeStep(0)">
-        <template #title v-if="examCount > 0">
-          <div class="step-title">
-            <el-badge :value="examCount" :max="99" class="badge-title">
-              <span style="min-width: 40px;display: block;">考试</span>
-            </el-badge>
-          </div>
-        </template>
-      </el-step>
-      <el-step title="培训" icon="VideoCamera" class="task-step" @click="changeStep(1)">
-        <template #title v-if="trainCount > 0">
-          <div class="step-title">
-            <el-badge :value="trainCount" :max="99" class="badge-title">
-              <span style="min-width: 40px;display: block;">培训</span>
-            </el-badge>
-          </div>
-        </template>
-      </el-step>
-      <el-step title="审批" icon="DocumentChecked" class="task-step" @click="changeStep(2)">
-        <template #title v-if="approvalCount > 0">
-          <div class="step-title">
-            <el-badge :value="approvalCount" :max="99" class="badge-title">
-              <span style="min-width: 40px;display: block;">审批</span>
-            </el-badge>
-          </div>
-        </template>
-      </el-step>
-    </el-steps>
-    <!-- 根据步骤动态显示不同的内容 -->
-    <div style="height: 93%;">
-      <TaskList v-if="activeStep === 0"
-                :showType="'exam'"
-                :key="activeStep"
-                :refresh="refreshFlag"
-                @reload-index="loadCounts"></TaskList>
-      <TaskList v-if="activeStep === 1"
-                :showType="'train'"
-                :key="activeStep"
-                :refresh="refreshFlag"
-                @reload-index="loadCounts"></TaskList>
-      <TaskList v-if="activeStep === 2"
-                :showType="'approval'"
-                :key="activeStep"
-                :refresh="refreshFlag"
-                @reload-index="loadCounts"></TaskList>
+  <div>
+    <div style="padding-right: 10px">
+      <el-steps :space="200" :active="activeStep" simple style="background-color: #FFFFFF; margin-bottom: 10px">
+        <el-step title="考试" icon="Edit" class="task-step" @click="changeStep(0)">
+          <template #title v-if="examCount > 0">
+            <div class="step-title">
+              <el-badge :value="examCount" :max="99" class="badge-title">
+                <span style="min-width: 40px;display: block;">考试</span>
+              </el-badge>
+            </div>
+          </template>
+        </el-step>
+        <el-step title="培训" icon="VideoCamera" class="task-step" @click="changeStep(1)">
+          <template #title v-if="trainCount > 0">
+            <div class="step-title">
+              <el-badge :value="trainCount" :max="99" class="badge-title">
+                <span style="min-width: 40px;display: block;">培训</span>
+              </el-badge>
+            </div>
+          </template>
+        </el-step>
+        <el-step title="审批" icon="DocumentChecked" class="task-step" @click="changeStep(2)">
+          <template #title v-if="approvalCount > 0">
+            <div class="step-title">
+              <el-badge :value="approvalCount" :max="99" class="badge-title">
+                <span style="min-width: 40px;display: block;">审批</span>
+              </el-badge>
+            </div>
+          </template>
+        </el-step>
+      </el-steps>
     </div>
+    <!-- 根据步骤动态显示不同的内容 -->
+    <TaskList v-if="activeStep === 0"
+              :showType="'exam'"
+              :key="activeStep"
+              :refresh="refreshFlag"
+              @reload-index="loadCounts"></TaskList>
+    <TaskList v-if="activeStep === 1"
+              :showType="'train'"
+              :key="activeStep"
+              :refresh="refreshFlag"
+              @reload-index="loadCounts"></TaskList>
+    <TaskList v-if="activeStep === 2"
+              :showType="'approval'"
+              :key="activeStep"
+              :refresh="refreshFlag"
+              @reload-index="loadCounts"></TaskList>
   </div>
 </template>
 
@@ -102,8 +102,8 @@ const loadCounts = async () => {
   cursor: pointer;
 }
 .step-title {
-  display: flex; 
-  align-items: center; 
+  display: flex;
+  align-items: center;
   justify-content: center;
 }
 </style>

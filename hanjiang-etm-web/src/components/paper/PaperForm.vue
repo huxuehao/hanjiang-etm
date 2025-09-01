@@ -513,7 +513,7 @@ defineExpose({ form, genEntity });
           </el-table-column>
           <el-table-column align="center" width="180px" v-if="!disableEdit">
             <template #header>
-              <el-popover placement="bottom" width="370">
+              <el-popover placement="bottom" width="450">
                 <div style="text-align: center">
                   <el-button
                     link
@@ -606,8 +606,8 @@ defineExpose({ form, genEntity });
       </el-col>
       <el-col :span="12" v-if="showShare">
         <el-form-item label="是否共享" prop="share" label-width="100px">
-          <el-select 
-            v-model="config.share" 
+          <el-select
+            v-model="config.share"
             :disabled="mode === 'view'"
             placeholder="请选择是否共享">
             <el-option label="共享" :value="1" />

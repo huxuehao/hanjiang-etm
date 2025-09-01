@@ -379,7 +379,7 @@ const handleAuthConfigSave = () => {
     <!-- 列表区域 -->
     <div
       class="data-list"
-      :style="[{ height: 'calc(100vh - 150px - ' + tHeight + 'px)' }]"
+      :style="[{ height: 'calc(100% - var(--table-hg-110) - ' + tHeight + 'px)' }]"
     >
       <el-table
         :stripe="false"
@@ -443,7 +443,7 @@ const handleAuthConfigSave = () => {
           align="center"
           width="100"
         ></el-table-column>
-        <el-table-column label="操作" width="360" align="center" fixed="right">
+        <el-table-column label="操作" width="400" align="center" fixed="right">
           <template #default="scope">
             <el-button
               v-permission="'role_view'"
@@ -559,8 +559,8 @@ const handleAuthConfigSave = () => {
         </el-col>
         <el-col :span="12">
           <el-form-item label="是否有效" prop="valid">
-            <!-- <el-switch 
-              v-model="formData.valid" 
+            <!-- <el-switch
+              v-model="formData.valid"
               style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
               active-text="有效"
               inactive-text="无效"
@@ -622,12 +622,6 @@ const handleAuthConfigSave = () => {
 
 <style lang="scss" scoped>
 @use "/src/style/views/index.scss" as *;
-
-.search-box,
-.button-box,
-.data-list {
-  margin-left: 10px;
-}
 </style>
 <style>
 .el-overlay .el-overlay-dialog .role-auth-config .el-dialog__body {

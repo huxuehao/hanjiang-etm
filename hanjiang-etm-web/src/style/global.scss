@@ -1,0 +1,85 @@
+@font-face {
+  font-family: 'AlimamaFangYuan';
+  src: url("@/assets/fonts/AlimamaFangYuanTiVF-Thin.woff");
+}
+
+:root {
+ --global-bg-color: #F0F4F8;
+ --table-hg-150: 160px;
+ --table-hg-110: 110px;
+ --main-color: #458CFB;
+}
+
+body {
+  margin: 0;
+  font-family: "AlimamaFangYuan", -apple-system, BlinkMacSystemFont, "Segoe UI",Microsoft YaHei, "Helvetica Neue", Arial, "Noto Sans", sans-serif,"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+#nprogress .bar {
+  background: #2f86de !important;
+  height: 0.5px !important;
+}
+
+.hover {
+  transition: 200ms;
+}
+
+.hover:hover {
+  color: #409eff;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.resize-left-box {
+  height: 100%;
+  border-radius: 5px;
+  overflow: hidden;
+  background-color: #FFFFFF;
+}
+
+.resize-right-box {
+  height: 100%;
+}
+.column-required {
+  &::before {
+    content: "*";
+    color: #f67a7a;
+    margin-right: 4px;
+  }
+}
+
+
+.grid {
+    display: grid;
+    padding: 0;
+}
+
+.gap-5 {
+    gap: 5px;
+}
+
+.gap-10 {
+    gap: 10px;
+}
+
+.grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.grid-cols-5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.grid-cols-6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+}

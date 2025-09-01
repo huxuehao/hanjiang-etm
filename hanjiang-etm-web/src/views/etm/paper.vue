@@ -180,7 +180,7 @@ let stopBtn = ref(false);
 const dialogProp = reactive({
   visible: false,
   title: "",
-  top: "10vh",
+  top: "5vh",
   width: "70%",
   modal: true,
   appendToBody: true,
@@ -458,7 +458,7 @@ const changePageSize = (pageSize: number) => {
         <!-- 列表区域 -->
         <div
           class="data-list"
-          :style="[{ height: 'calc(100vh - 180px - ' + tHeight + 'px)' }]"
+          :style="[{ height: 'calc(100% - var(--table-hg-150) - ' + tHeight + 'px)' }]"
         >
           <el-table
             :stripe="false"
@@ -547,12 +547,12 @@ const changePageSize = (pageSize: number) => {
             </el-table-column>
             <el-table-column
               label="操作"
-              width="200"
+              width="220"
               align="center"
               fixed="right"
             >
               <template #default="scope">
-                <el-popover placement="bottom" width="350">
+                <el-popover placement="bottom" width="400">
                   <el-button
                     link
                     type=""

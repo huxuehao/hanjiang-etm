@@ -2,23 +2,117 @@ import { getButtonPermissions } from "@/api/role";
 import cache from "./cache";
 import setting from "@/config/setting";
 
+/**
+ * 获取第一个叶子节点
+ * @param nodes 树形结构数据
+ * @returns 第一个叶子节点
+ */
+export const findFirstLeafNode: any = (nodes: any) => {
+  if (!nodes || nodes.length === 0) {
+    return null;
+  }
+  for (let i = 0; i < nodes.length; i++) {
+    const node = nodes[i];
+    if (!node.children || node.children.length === 0) {
+      return node;
+    }
+    const leaf = findFirstLeafNode(node.children);
+    if (leaf) {
+      return leaf;
+    }
+  }
+  return null;
+};
+
+/**
+ * 根据路由path获取顶级节点
+ * @param nodes 树形结构数据
+ * @param path  路由path
+ * @returns 第一个叶子节点
+ */
+export const findTopNodeWithRoutePath: any = (nodes: any, path: string) => {
+  if (!nodes || nodes.length === 0) {
+    return null;
+  }
+  for(let item of nodes) {
+    if(item.path === path) {
+      return {...item, hasChildren:item.children?.length > 0 || false, children: null};
+    }
+    if(item.children && item.children.length > 0) {
+      const top = findTopNodeWithRoutePath(item.children, path)
+      if(top) {
+        return {...item, hasChildren:item.children?.length > 0 || false, children: null};
+      }
+    }
+  }
+  return null;
+};
+
+/**
+ * 根据路由path获取节点
+ * @param nodes 树形结构数据
+ * @param path  路由path
+ * @returns 目标节点
+ */
+export const findNodeWithRoutePath: any = (nodes: any, path: string) => {
+  if (!nodes || nodes.length === 0) {
+    return null;
+  }
+  for(let item of nodes) {
+    if(item.path === path) {
+      return {...item, hasChildren:item.children?.length > 0 || false, children: null};
+    }
+    if(item.children && item.children.length > 0) {
+      const node = findNodeWithRoutePath(item.children, path)
+      if(node) {
+        return node
+      }
+    }
+  }
+  return null;
+};
+
+/**
+ * 解析菜单
+ * @param menu 菜单元素
+ */
+export const parseMenu = (menu: any) => {
+  let querys = JSON.parse(menu.params || "[]");
+  let query_: any = {};
+  querys.forEach((item: any) => {
+    query_[item.key] = item.value;
+  });
+
+  let fullPath = menu.path;
+  if (!isEmpty(query_)) {
+    fullPath += "?" + tansRequestParams(query_);
+  }
+
+  return {
+    path: menu.path,
+    query: query_,
+    fullPath,
+  };
+};
+
 // 获取用户权限
-const permissionsKey = setting.permissions
+const permissionsKey = setting.permissions;
 export const getUserPermissions = () => {
   return new Promise(async (resolve, reject) => {
-    const permissions = cache.local.getJSON(permissionsKey)
-    if(!isEmpty(permissions)) {
+    const permissions = cache.local.getJSON(permissionsKey);
+    if (!isEmpty(permissions)) {
       resolve(permissions);
-      return
+      return;
     }
-    await getButtonPermissions().then((res) => {
-      cache.local.setJSON(permissionsKey, res.data.data)
-      resolve(res.data.data);
-    }).catch((error) => {
-      reject(error)
-    })
-  })
-  
+    await getButtonPermissions()
+      .then((res) => {
+        cache.local.setJSON(permissionsKey, res.data.data);
+        resolve(res.data.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
 };
 
 /**
@@ -126,7 +220,10 @@ export const debounce = (func: Function, delay: number, immediate: boolean) => {
  * @param pattern 格式化字符串（如：yyyy-MM-dd HH:mm:ss）
  * @returns 格式化后字符串
  */
-export function formatDate(time: number | string | Date, pattern: string = "yyyy-MM-dd HH:mm:ss") {
+export function formatDate(
+  time: number | string | Date,
+  pattern: string = "yyyy-MM-dd HH:mm:ss"
+) {
   let date: Date;
 
   // 将 time 转成 Date
@@ -268,7 +365,7 @@ export function isEmpty(obj: any) {
   return false;
 }
 
-    // 格式化文件大小
+// 格式化文件大小
 export function formatFileSize(sizeInBytes: number) {
   if (sizeInBytes < 1024) {
     return `${sizeInBytes} B`;
@@ -278,5 +375,55 @@ export function formatFileSize(sizeInBytes: number) {
     return `${(sizeInBytes / (1024 * 1024)).toFixed(2)} MB`;
   } else {
     return `${(sizeInBytes / (1024 * 1024 * 1024)).toFixed(2)} GB`;
+  }
+}
+
+// 格式化java代码
+export function formatJavaCode(code: string): string {
+  const lines = code.split("\n");
+  let indentLevel = 0;
+  const formattedLines: string[] = [];
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (trimmed === "") {
+      formattedLines.push("");
+      continue;
+    }
+
+    // 处理以 } 开头的情况，减少当前行的缩进
+    let currentIndent = indentLevel;
+    if (trimmed.startsWith("}")) {
+      currentIndent = Math.max(indentLevel - 1, 0);
+    }
+
+    // 生成当前行的缩进
+    const indent = " ".repeat(currentIndent * 4);
+    formattedLines.push(indent + trimmed);
+
+    // 计算下一行的缩进级别
+    const openBraces = (trimmed.match(/{/g) || []).length;
+    const closeBraces = (trimmed.match(/}/g) || []).length;
+    indentLevel += openBraces - closeBraces;
+    indentLevel = Math.max(indentLevel, 0); // 缩进级别不能为负数
+  }
+
+  return formattedLines.join("\n");
+}
+
+/**
+ *
+ * @param jsonStr JSON 字符串
+ * @param indent  缩进
+ */
+export function formatJSON(jsonStr: string, indent = 2): string {
+  try {
+    const obj = JSON.parse(jsonStr);
+    // 处理缩进类型：数字转换为空格数，字符串直接使用（如 '\t'）
+    const indentChar = typeof indent === "number" ? " ".repeat(indent) : indent;
+    return JSON.stringify(obj, null, indentChar);
+  } catch (e: any) {
+    // 返回带错误信息的字符串
+    return `Invalid JSON: ${e.message}`;
   }
 }

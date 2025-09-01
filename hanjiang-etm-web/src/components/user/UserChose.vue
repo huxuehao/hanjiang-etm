@@ -286,6 +286,7 @@ const changePageSize = (pageSize: number) => {
         v-loading="loading"
         @selection-change="handelSelectionChange"
         row-key="id"
+        scrollbar-always-on
         border
       >
         <el-table-column

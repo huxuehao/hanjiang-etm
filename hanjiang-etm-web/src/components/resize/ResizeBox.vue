@@ -23,6 +23,11 @@ const props = defineProps({
     type: Number,
     default: null,
   },
+  // 是否支持拖拽
+  move: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const size = ref(props.initialSize);
@@ -32,9 +37,9 @@ const startSize = ref(0);
 
 const canDrag = computed(() => {
   return (
-    props.maxSize === null ||
-    props.maxSize !== props.initialSize ||
-    props.minSize !== props.initialSize
+      props.maxSize === null ||
+      props.maxSize !== props.initialSize ||
+      props.minSize !== props.initialSize
   );
 });
 
@@ -49,6 +54,9 @@ const firstPaneStyle = computed(() => {
   if (props.maxSize !== null) {
     style[`max${capitalized}`] = `${props.maxSize}px`;
   }
+  if (!props.move) {
+    style["transition"] = "0.3s";
+  }
   return style;
 });
 
@@ -57,12 +65,21 @@ const secondPaneStyle = computed(() => ({
   overflow: "hidden",
 }));
 
+const triggerFold = (isFold = false) => {
+  if(isFold) {
+    size.value = props.minSize
+  } else {
+    size.value = props.maxSize
+  }
+};
+
 let cleanup = null;
 
 function setCursor(e) {
   if (!canDrag.value) return;
+  if (!props.move) return;
   e.target.style.cursor =
-    props.direction === "horizontal" ? "col-resize" : "row-resize";
+      props.direction === "horizontal" ? "col-resize" : "row-resize";
 }
 
 function resetCursor(e) {
@@ -71,21 +88,26 @@ function resetCursor(e) {
 
 function startDrag(e) {
   if (!canDrag.value) return;
+  if (!props.move) return;
 
   isDragging.value = true;
   startPosition.value = props.direction === "horizontal" ? e.clientX : e.clientY;
   startSize.value = size.value;
 
+  const getCurrentPosition = (e) =>
+      props.direction === "horizontal" ? e.clientX : e.clientY;
+
   const moveHandler = (e) => {
     if (!isDragging.value) return;
-    const current = props.direction === "horizontal" ? e.clientX : e.clientY;
+    const current = getCurrentPosition(e);
     const delta = current - startPosition.value;
     let newSize = startSize.value + delta;
 
     // 应用双边界限制
-    newSize = Math.max(newSize, props.minSize);
-    if (props.maxSize !== null) {
-      newSize = Math.min(newSize, props.maxSize);
+    if (newSize < props.minSize) {
+      newSize = props.minSize;
+    } else if (props.maxSize !== null && newSize > props.maxSize) {
+      newSize = props.maxSize;
     }
 
     size.value = newSize;
@@ -110,6 +132,8 @@ onBeforeUnmount(() => {
     cleanup();
   }
 });
+
+defineExpose({triggerFold})
 </script>
 
 <template>
@@ -118,10 +142,11 @@ onBeforeUnmount(() => {
       <slot name="first"></slot>
     </div>
     <div
-      class="resize-trigger"
-      @mousedown.prevent="startDrag"
-      @mouseenter="setCursor"
-      @mouseleave="resetCursor"
+        class="resize-trigger"
+        :class="move ? 'bar' : ''"
+        @mousedown.prevent="startDrag"
+        @mouseenter="setCursor"
+        @mouseleave="resetCursor"
     ></div>
     <div class="second-pane" :style="secondPaneStyle">
       <slot name="second"></slot>
@@ -156,23 +181,30 @@ onBeforeUnmount(() => {
 
 /* 水平布局样式 */
 .horizontal .resize-trigger {
-  width: 7px;  /* 总热区宽度 */
-  margin: 0 -3px; /* 扩展热区 */
+  width: 10px;  /* 总热区宽度 */
+  margin: 0 -0px; /* 扩展热区 */
+
+}
+
+.horizontal .bar {
   cursor: col-resize;
 }
 
 /* 垂直布局样式 */
 .vertical .resize-trigger {
-  height: 7px;  /* 总热区高度 */
-  margin: -3px 0; /* 扩展热区 */
-  cursor: row-resize;
+  height: 10px;  /* 总热区高度 */
+  margin: -0px 0; /* 扩展热区 */
+}
+
+.vertical .bar {
+  cursor: col-resize;
 }
 
 /* 拖拽条视觉元素（实际可见部分） */
-.resize-trigger::after {
+.bar::after {
   content: '';
   position: absolute;
-  background: #f0f0f0;
+  background: #e7e7e7;
   transition: all 0.2s;
 }
 
@@ -200,7 +232,7 @@ onBeforeUnmount(() => {
 
 /* 悬停效果 */
 .resize-trigger:hover::after {
-  background: #d7d7d7;
+  background: #c4c4c4;
 }
 
 .first-pane {
@@ -217,16 +249,16 @@ onBeforeUnmount(() => {
 
 /* 创建视觉间隔 */
 .horizontal .first-pane {
-  margin-right: 3px;  /* 间隔尺寸 */
+  margin-right: 0;  /* 间隔尺寸 */
 }
 .horizontal .second-pane {
-  margin-left: 3px;  /* 间隔尺寸 */
+  margin-left: 0;  /* 间隔尺寸 */
 }
 
 .vertical .first-pane {
-  margin-bottom: 3px;  /* 间隔尺寸 */
+  margin-bottom: 0;  /* 间隔尺寸 */
 }
 .vertical .second-pane {
-  margin-top: 3px;  /* 间隔尺寸 */
+  margin-top: 0;  /* 间隔尺寸 */
 }
 </style>

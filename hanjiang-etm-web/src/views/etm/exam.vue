@@ -799,7 +799,7 @@ const changePageSize = (pageSize: number) => {
         <!-- 列表区域 -->
         <div
           class="data-list"
-          :style="[{ height: 'calc(100vh - 180px - ' + tHeight + 'px)' }]"
+          :style="[{ height: 'calc(100% - var(--table-hg-150) - ' + tHeight + 'px)' }]"
         >
           <el-table
             :stripe="false"
@@ -840,13 +840,13 @@ const changePageSize = (pageSize: number) => {
               label="开始时间"
               prop="limitStartTime"
               align="center"
-              width="150"
+              width="160"
             ></el-table-column>
             <el-table-column
               label="结束时间"
               prop="limitEndTime"
               align="center"
-              width="150"
+              width="160"
             ></el-table-column>
             <el-table-column
               label="是否发布"
@@ -891,14 +891,14 @@ const changePageSize = (pageSize: number) => {
             </el-table-column>
             <el-table-column
               label="操作"
-              width="250"
+              width="280"
               align="center"
               fixed="right"
             >
               <template #default="scope">
                 <el-popover
                   placement="bottom"
-                  width="350"
+                  width="400"
                   :disabled="scope.row.questionRule === 1"
                 >
                   <el-button

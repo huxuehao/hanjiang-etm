@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import setting from "@/config/setting"
+import cache from "@/utils/cache";
+import { isEmpty } from "@/utils/tools";
 
 export const useMenusStore = defineStore("menus", () => {
   // 当前菜单
@@ -11,6 +13,29 @@ export const useMenusStore = defineStore("menus", () => {
   };
   const getCurrentMenu = () => {
     return currentMenu.value;
+  };
+
+  // 当前第一层菜单
+  let currentFirstFloorMenu = ref<any>(cache.local.getJSON("currentFirstFloorMenu", {}));
+  const setCurrentFirstFloorMenu = (menu: any) => {
+    cache.local.setJSON("currentFirstFloorMenu", menu)
+    currentFirstFloorMenu.value = menu;
+  };
+  const removeCurrentFirstFloorMenu = () => {
+    cache.local.remove("currentFirstFloorMenu")
+    currentFirstFloorMenu.value = {};
+  };
+  const getCurrentFirstFloorMenu = () => {
+    if(isEmpty(currentFirstFloorMenu.value)) {
+      const menus = cache.local.getJSON("menus", [])
+      if (menus.length === 0) {
+        return []
+      }
+      let {id, name, path, icon, code, params, sort} =  menus[0]
+      let hasChildren = menus[0].children?.length > 0 || false
+      setCurrentFirstFloorMenu({id, name, path, icon, code, params, sort, hasChildren})
+    }
+    return currentFirstFloorMenu.value;
   };
 
   // 已经打开过的菜单列表
@@ -66,6 +91,9 @@ export const useMenusStore = defineStore("menus", () => {
     currentMenu,
     setCurrentMenu,
     getCurrentMenu,
+    getCurrentFirstFloorMenu,
+    setCurrentFirstFloorMenu,
+    removeCurrentFirstFloorMenu,
     openedMenuList,
     addMenuToList,
     getMenuList,
