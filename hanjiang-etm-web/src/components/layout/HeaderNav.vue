@@ -17,7 +17,7 @@ const handelLogout = () => {
     type: "warning",
   }).then(() => {
     userStore.doLogout(userStore.userInfo.id).then(() => {
-      window.location.href = `${setting.baseUrl}#/login`;
+      window.location.href = `/${setting.baseUrl}#/login`;
     })
   });
 };
