@@ -122,7 +122,7 @@ hanjiang-etm                      # 项目主目录
 
 
 
-### 3. 项目截图
+### 3. 项目截图（ :tada: :tada: :tada: 前端V2.0版本上线 :tada: :tada: :tada: ，该截图仅供参考）
 
 登录页：
 
