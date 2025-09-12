@@ -29,7 +29,7 @@ const handelLogout = () => {
     type: "warning",
   }).then(() => {
     userStore.doLogout(userStore.userInfo.id).then(() => {
-      window.open(`/${setting.baseUrl}/#/login`, '_self')
+      window.location.href = `${setting.baseUrl}#/login`;
     })
   });
 };

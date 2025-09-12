@@ -17,7 +17,7 @@ const handelLogout = () => {
     type: "warning",
   }).then(() => {
     userStore.doLogout(userStore.userInfo.id).then(() => {
-      window.open(`${setting.baseUrl}#/login`, '_self')
+      window.location.href = `${setting.baseUrl}#/login`;
     })
   });
 };
@@ -64,7 +64,7 @@ const goUserInfo = () => {
     user-select: none;
     font-size: 20px;
     color: #4093ff;
-    text-shadow: 
+    text-shadow:
     2px 2px 0 #dcdcdc,  /* 上右 */
     -2px -2px 0 #dcdcdc, /* 下左 */
     2px -2px 0 #dcdcdc,  /* 上左 */
