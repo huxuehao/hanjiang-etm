@@ -511,7 +511,7 @@ defineExpose({ form, genEntity });
               <span v-else>--</span>
             </template>
           </el-table-column>
-          <el-table-column align="center" width="180px" v-if="!disableEdit">
+          <el-table-column align="center" width="220px" v-if="!disableEdit">
             <template #header>
               <el-popover placement="bottom" width="450">
                 <div style="text-align: center">
