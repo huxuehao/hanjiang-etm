@@ -73,7 +73,7 @@ const handelSubmit = (formEl: FormInstance | undefined) => {
       <el-form-item label="" prop="account" label-width="0">
         <el-input
           v-model="passwordForm.account"
-          placeholder="请输入用户名"
+          placeholder="请输入账号"
           maxlength="100"
           prefix-icon="User"
           clearable
