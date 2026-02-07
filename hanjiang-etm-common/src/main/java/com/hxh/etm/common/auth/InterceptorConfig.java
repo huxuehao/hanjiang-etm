@@ -1,10 +1,12 @@
 package com.hxh.etm.common.auth;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.servlet.config.annotation.*;
+
+import java.util.List;
 
 /**
  * 描述：拦截器配置
@@ -12,7 +14,20 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
  * @author huxuehao
  **/
 @Configuration
-public class InterceptorConfig extends WebMvcConfigurationSupport {
+public class InterceptorConfig implements WebMvcConfigurer {
+    private final ObjectMapper objectMapper;
+
+    public InterceptorConfig(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
+
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        MappingJackson2HttpMessageConverter jackson2HttpMessageConverter =
+                new MappingJackson2HttpMessageConverter();
+        jackson2HttpMessageConverter.setObjectMapper(objectMapper);
+        converters.add(jackson2HttpMessageConverter);
+    }
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         /* 拦截所有的请求，通过请求映射到的方法上的注解进行判断是否需要权限验证 */
