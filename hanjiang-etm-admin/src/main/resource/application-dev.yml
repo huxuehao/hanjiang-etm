@@ -45,4 +45,4 @@ mybatis-plus:
 # 日志级别
 logging:
   level:
-    com.hanjiang.etm: debug # off
+    com.hxh.etm: debug # off
