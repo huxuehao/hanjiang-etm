@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.hxh</groupId>
+        <groupId>com.hxh.etm</groupId>
         <artifactId>hanjiang-etm</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
@@ -16,53 +16,53 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.hxh</groupId>
+            <groupId>com.hxh.etm</groupId>
             <artifactId>hanjiang-etm-etm</artifactId>
             <version>${parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.hxh</groupId>
+            <groupId>com.hxh.etm</groupId>
             <artifactId>hanjiang-etm-paper</artifactId>
             <version>${parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.hxh</groupId>
+            <groupId>com.hxh.etm</groupId>
             <artifactId>hanjiang-etm-question</artifactId>
             <version>${parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.hxh</groupId>
+            <groupId>com.hxh.etm</groupId>
             <artifactId>hanjiang-etm-statistics</artifactId>
             <version>${parent.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.hxh</groupId>
+            <groupId>com.hxh.etm</groupId>
             <artifactId>hanjiang-etm-auth</artifactId>
             <version>${parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.hxh</groupId>
+            <groupId>com.hxh.etm</groupId>
             <artifactId>hanjiang-etm-menu</artifactId>
             <version>${parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.hxh</groupId>
+            <groupId>com.hxh.etm</groupId>
             <artifactId>hanjiang-etm-org</artifactId>
             <version>${parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.hxh</groupId>
+            <groupId>com.hxh.etm</groupId>
             <artifactId>hanjiang-etm-params</artifactId>
             <version>${parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.hxh</groupId>
+            <groupId>com.hxh.etm</groupId>
             <artifactId>hanjiang-etm-resource</artifactId>
             <version>${parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.hxh</groupId>
+            <groupId>com.hxh.etm</groupId>
             <artifactId>hanjiang-etm-user</artifactId>
             <version>${parent.version}</version>
         </dependency>

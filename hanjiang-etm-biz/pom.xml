@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.hxh</groupId>
+        <groupId>com.hxh.etm</groupId>
         <artifactId>hanjiang-etm</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
@@ -20,22 +20,22 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.hxh</groupId>
+                <groupId>com.hxh.etm</groupId>
                 <artifactId>hanjiang-etm-common</artifactId>
                 <version>${parent.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.hxh</groupId>
+                <groupId>com.hxh.etm</groupId>
                 <artifactId>hanjiang-etm-question</artifactId>
                 <version>${parent.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.hxh</groupId>
+                <groupId>com.hxh.etm</groupId>
                 <artifactId>hanjiang-etm-paper</artifactId>
                 <version>${parent.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.hxh</groupId>
+                <groupId>com.hxh.etm</groupId>
                 <artifactId>hanjiang-etm-etm</artifactId>
                 <version>${parent.version}</version>
             </dependency>
